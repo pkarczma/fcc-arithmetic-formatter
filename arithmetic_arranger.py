@@ -3,9 +3,8 @@ def arithmetic_arranger(problems, addanswers = False):
     if len(problems) > 5:
         return "Error: Too many problems."
     
-    # Create an empty array of arrays, where
-    # each element keeps the contents for each line
-    arrline = [[],[],[],[]]
+    # Create an empty array of strings per each line
+    line = ["", "", "", ""]
     # For each problem
     for problem in problems:
         # Extract values and an operator
@@ -19,23 +18,22 @@ def arithmetic_arranger(problems, addanswers = False):
         # Values must consist of maximum 4 digits
         if len(value1) > 4 or len(value2) > 4:
             return "Error: Numbers cannot be more than four digits."
+        # Extract maximum length of values
         maxlen = max(len(value1), len(value2))
-        arrline[0].append(value1.rjust(maxlen + 2))
-        arrline[1].append(operator + value2.rjust(maxlen + 1))
-        arrline[2].append("".rjust(maxlen + 2, "-"))
+        # Append justified elements and spaces to each line
+        line[0] += value1.rjust(maxlen + 2) + "    "
+        line[1] += operator + value2.rjust(maxlen + 1) + "    "
+        line[2] += (maxlen + 2) * '-' + "    "
         if operator == "+":
-            arrline[3].append(str(int(value1) + int(value2)).rjust(maxlen + 2))
+            line[3] += str(int(value1) + int(value2)).rjust(maxlen + 2) + "    "
         else:
-            arrline[3].append(str(int(value1) - int(value2)).rjust(maxlen + 2))
+            line[3] += str(int(value1) - int(value2)).rjust(maxlen + 2) + "    "
 
-    arranged = ""
-    lines = len(arrline) - int(addanswers == False)
-    for ii in range(lines):
-        for jj in range(len(problems)):
-            arranged = arranged + str(arrline[ii][jj]) + "    "
-        arranged = arranged.rstrip()
-        if ii < lines - 1:
-            arranged += "\n"
-    arranged.rstrip()
+    # Create an arranged string
+    arranged = line[0].rstrip() + '\n' + line[1].rstrip() + '\n' + line[2].rstrip()
+    # Add answers to the arranged string
+    if addanswers == True:
+        arranged += '\n' + line[3].rstrip()
     
+    # Return arranged string
     return arranged
